@@ -60,6 +60,7 @@ taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span
 listItemEl.appendChild(taskInfoEl);
 taskDataObj.id = taskIdCounter;
 tasks.push(taskDataObj);
+localStorage.setItem("tasks", tasks);
 
 var taskActionsEl = createTaskAction(taskIdCounter);
 listItemEl.appendChild(taskActionsEl);
@@ -95,7 +96,7 @@ for (var i = 0; i < tasks.length; i++) {
     }
 };
 
-alert("Task Updated!");
+localStorage.setItem("tasks", tasks);
 formEl.removeAttribute("data-task-id");
 document.querySelector("#save-task").textContent = "Add Task";
 
@@ -198,6 +199,7 @@ var deleteTask = function(taskId) {
     }
 // reassign tasks array to be the same as updatedTaskArr
 tasks = updatedTaskArr;
+localStorage.setItem("tasks" , tasks);
 };
 
 var taskStatusChangeHandler = function(event) {
@@ -206,7 +208,6 @@ var taskStatusChangeHandler = function(event) {
 
     // get the currently selected option's value and convert to lowercase
     var statusValue = event.target.value.toLowerCase();
-    console.log(event.target)
     //find the parent task item element based on the id
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId +"']");
     
@@ -221,12 +222,16 @@ var taskStatusChangeHandler = function(event) {
     }
     // update task's in tasks array
     for (var i = 0; i < tasks.length; i++) {
-        console.log(tasks);
         if (tasks[i].id === parseInt(taskId)) {
             tasks[i].status = statusValue;
         }
     }
+    localStorage.setItem("tasks", tasks);
 };
+
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify (tasks));
+}
 
 pageContentEl.addEventListener("click", taskButtonHandler);
 
